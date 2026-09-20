@@ -37,12 +37,12 @@ jobs:
 
       - name: Commit updated watermark (state.json), if it changed
         run: |
-          if ! git diff --quiet -- state.json; then
-            git config user.name "signal-bot"
-            git config user.email "actions@users.noreply.github.com"
-            git add state.json
+          git config user.name "signal-bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add state.json
+          if git diff --cached --quiet -- state.json; then
+            echo "No change to state.json, nothing to commit."
+          else
             git commit -m "Update signal bot watermark [skip ci]"
             git push
-          else
-            echo "No change to state.json, nothing to commit."
           fi
