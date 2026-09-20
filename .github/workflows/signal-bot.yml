@@ -1,0 +1,48 @@
+name: Signal Bot Poll
+
+# Runs on a schedule (every 15 min) and can also be triggered manually from
+# the Actions tab (Run workflow button) for testing.
+on:
+  schedule:
+    - cron: "*/15 * * * *"
+  workflow_dispatch: {}
+
+# Needed so this workflow is allowed to commit the updated state.json back
+# to the repo at the end of each run.
+permissions:
+  contents: write
+
+jobs:
+  poll:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repo
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: "pip"
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Run signal bot (one-shot check)
+        env:
+          JOURNAL_DB_URL: ${{ secrets.JOURNAL_DB_URL }}
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_FREE_CHAT_ID: ${{ secrets.TELEGRAM_FREE_CHAT_ID }}
+        run: python telegram_signal_bot.py
+
+      - name: Commit updated watermark (state.json), if it changed
+        run: |
+          if ! git diff --quiet -- state.json; then
+            git config user.name "signal-bot"
+            git config user.email "actions@users.noreply.github.com"
+            git add state.json
+            git commit -m "Update signal bot watermark [skip ci]"
+            git push
+          else
+            echo "No change to state.json, nothing to commit."
+          fi
