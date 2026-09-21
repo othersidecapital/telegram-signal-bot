@@ -4,7 +4,7 @@ name: Signal Bot Poll
 # the Actions tab (Run workflow button) for testing.
 on:
   schedule:
-    - cron: "*/5 * * * *"
+    - cron: "*/15 * * * *"
   workflow_dispatch: {}
 
 # Needed so this workflow is allowed to commit the updated state.json back
@@ -35,14 +35,14 @@ jobs:
           TELEGRAM_FREE_CHAT_ID: ${{ secrets.TELEGRAM_FREE_CHAT_ID }}
         run: python telegram_signal_bot.py
 
-      - name: Commit updated watermark (state.json), if it changed
+      - name: Commit updated watermark / digest, if they changed
         run: |
           git config user.name "signal-bot"
           git config user.email "actions@users.noreply.github.com"
-          git add state.json
-          if git diff --cached --quiet -- state.json; then
-            echo "No change to state.json, nothing to commit."
+          git add state.json digest.json
+          if git diff --cached --quiet -- state.json digest.json; then
+            echo "No change to state.json/digest.json, nothing to commit."
           else
-            git commit -m "Update signal bot watermark [skip ci]"
+            git commit -m "Update signal bot watermark/digest [skip ci]"
             git push
           fi
