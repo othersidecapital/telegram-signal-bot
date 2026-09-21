@@ -16,6 +16,12 @@ Polls options_trades and posts three kinds of updates to your free channel:
 The goal is full transparency: every open call the channel sees gets its
 stop adjustments and its final outcome posted too, not just the win.
 
+It also refreshes digest.json every run -- a rolling 7-day recap of closed
+trades (win rate, total P&L, per-trade notes) with no P&L/thesis analysis
+attached. Since this repo is public, that file is readable over plain
+HTTPS with no DB credentials needed, which is what the weekly X-content
+task reads from to draft a recap thread and graphic.
+
 Why this needs more than "watch for new rows"
 ------------------------------------------------
 Checked this against your actual trading-journal app's source (app/page.js).
@@ -123,6 +129,13 @@ RUN_ONCE = True
 
 STATE_FILE = Path(__file__).parent / "state.json"
 
+# Rolling 7-day recap of closed trades, refreshed every run. This is what
+# lets other tools (e.g. a weekly X-content task) get last week's trade
+# outcomes without ever needing your DB password -- since this repo is
+# public, they can just read this file over plain HTTPS.
+DIGEST_FILE = Path(__file__).parent / "digest.json"
+DIGEST_WINDOW_DAYS = 7
+
 
 # ---------------------------------------------------------------------------
 # State
@@ -198,6 +211,58 @@ def fetch_tracked_rows(cur, tracked_open_ids):
         (list(tracked_open_ids),),
     )
     return cur.fetchall()
+
+
+def fetch_weekly_digest(cur):
+    """Pull every trade closed in the last DIGEST_WINDOW_DAYS days, for the
+    weekly X-content task to build a recap thread/graphic from. Read-only,
+    doesn't affect the OPEN/STOP/CLOSE posting logic above at all."""
+    cur.execute(
+        f"""
+        SELECT * FROM {TABLE_NAME}
+        WHERE lower(status) = 'closed'
+          AND exit_date >= (now() - interval '{DIGEST_WINDOW_DAYS} days')
+        ORDER BY exit_date DESC
+        """
+    )
+    return cur.fetchall()
+
+
+def build_digest_payload(rows) -> dict:
+    pnls = [float(r["pnl"]) for r in rows if r.get("pnl") is not None]
+    wins = [p for p in pnls if p > 0]
+    losses = [p for p in pnls if p < 0]
+    return {
+        "generated_at": datetime.now(timezone.utc).isoformat(),
+        "window_days": DIGEST_WINDOW_DAYS,
+        "trade_count": len(rows),
+        "wins": len(wins),
+        "losses": len(losses),
+        "win_rate_pct": round(len(wins) / len(pnls) * 100, 1) if pnls else None,
+        "total_pnl": round(sum(pnls), 2) if pnls else None,
+        "trades": [
+            {
+                "ticker": r.get("ticker"),
+                "position_side": r.get("position_side"),
+                "option_type": r.get("option_type"),
+                "strike_price": _norm_num(r.get("strike_price")),
+                "expiry_date": str(r["expiry_date"]) if r.get("expiry_date") else None,
+                "entry_date": str(r["entry_date"]) if r.get("entry_date") else None,
+                "exit_date": str(r["exit_date"]) if r.get("exit_date") else None,
+                "entry_stock_price": _norm_num(r.get("entry_stock_price")),
+                "premium": _norm_num(r.get("premium")),
+                "contracts": _norm_num(r.get("contracts")),
+                "pnl": _norm_num(r.get("pnl")),
+                "notes": r.get("notes"),
+                "journal_notes": r.get("journal_notes"),
+            }
+            for r in rows
+        ],
+    }
+
+
+def save_digest(payload: dict) -> None:
+    DIGEST_FILE.write_text(json.dumps(payload, indent=2, default=str))
 
 
 # ---------------------------------------------------------------------------
@@ -343,6 +408,10 @@ def run_once(state: dict) -> dict:
                 stop_watch[rid] = new_stops
 
             tracked_open_ids = [i for i in tracked_open_ids if i in still_open_ids]
+
+            # 3. Refresh the public weekly digest (read-only, no posting).
+            digest_rows = fetch_weekly_digest(cur)
+            save_digest(build_digest_payload(digest_rows))
     finally:
         conn.close()
 
