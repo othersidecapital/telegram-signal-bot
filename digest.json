@@ -1,12 +1,27 @@
 {
-  "generated_at": "2026-09-21T18:31:11.666817+00:00",
+  "generated_at": "2026-09-21T18:54:47.844041+00:00",
   "window_days": 7,
-  "trade_count": 4,
+  "trade_count": 5,
   "wins": 0,
-  "losses": 1,
+  "losses": 2,
   "win_rate_pct": 0.0,
-  "total_pnl": -66.0,
+  "total_pnl": -646.0,
   "trades": [
+    {
+      "ticker": "SHOP",
+      "position_side": "long",
+      "option_type": "put",
+      "strike_price": 129.0,
+      "expiry_date": "2026-10-02",
+      "entry_date": "2026-09-18 18:01:33.250876+00:00",
+      "exit_date": "2026-09-21 18:52:41.109000+00:00",
+      "entry_stock_price": 128.92,
+      "premium": 5.35,
+      "contracts": 2.0,
+      "pnl": -580.0,
+      "notes": null,
+      "journal_notes": null
+    },
     {
       "ticker": "GHTEST",
       "position_side": "long",
