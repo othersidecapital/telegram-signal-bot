@@ -1,11 +1,11 @@
 {
-  "generated_at": "2026-09-23T15:09:41.995368+00:00",
+  "generated_at": "2026-09-23T15:27:30.455119+00:00",
   "window_days": 7,
-  "trade_count": 5,
+  "trade_count": 4,
   "wins": 0,
-  "losses": 2,
+  "losses": 1,
   "win_rate_pct": 0.0,
-  "total_pnl": -646.0,
+  "total_pnl": -580.0,
   "trades": [
     {
       "ticker": "SHOP",
@@ -65,21 +65,6 @@
       "contracts": 1.0,
       "pnl": 0.0,
       "notes": "Test run closed.",
-      "journal_notes": null
-    },
-    {
-      "ticker": "PLTR",
-      "position_side": "long",
-      "option_type": "call",
-      "strike_price": 167.5,
-      "expiry_date": "2026-09-25",
-      "entry_date": "2026-09-10 15:39:20.314737+00:00",
-      "exit_date": "2026-09-16 15:18:24.068000+00:00",
-      "entry_stock_price": 167.78,
-      "premium": 6.8,
-      "contracts": 2.0,
-      "pnl": -66.0,
-      "notes": null,
       "journal_notes": null
     }
   ]
