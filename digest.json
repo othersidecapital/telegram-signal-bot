@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-09-27T23:33:39.196913+00:00",
+  "generated_at": "2026-09-27T23:44:24.063949+00:00",
   "window_days": 7,
-  "trade_count": 3,
+  "trade_count": 2,
   "wins": 0,
   "losses": 1,
   "win_rate_pct": 0.0,
@@ -35,21 +35,6 @@
       "contracts": 1.0,
       "pnl": 0.0,
       "notes": "Test closed successfully",
-      "journal_notes": null
-    },
-    {
-      "ticker": "TEST2",
-      "position_side": "long",
-      "option_type": "call",
-      "strike_price": 100.0,
-      "expiry_date": "2026-09-25",
-      "entry_date": "2026-09-20 23:15:28.359235+00:00",
-      "exit_date": "2026-09-20 23:35:54.848000+00:00",
-      "entry_stock_price": 100.0,
-      "premium": 1.0,
-      "contracts": 1.0,
-      "pnl": 0.0,
-      "notes": "TEST2 closed.",
       "journal_notes": null
     }
   ]
