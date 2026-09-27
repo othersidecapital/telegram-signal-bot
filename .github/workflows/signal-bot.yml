@@ -4,7 +4,7 @@ name: Signal Bot Poll
 # the Actions tab (Run workflow button) for testing.
 on:
   schedule:
-    - cron: "*/15 * * * *"
+    - cron: "*/5 * * * *"
   workflow_dispatch: {}
 
 # Needed so this workflow is allowed to commit the updated state.json back
