@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-09-27T23:53:35.674989+00:00",
+  "generated_at": "2026-09-28T00:06:58.448142+00:00",
   "window_days": 7,
-  "trade_count": 2,
+  "trade_count": 1,
   "wins": 0,
   "losses": 1,
   "win_rate_pct": 0.0,
@@ -20,21 +20,6 @@
       "contracts": 2.0,
       "pnl": -580.0,
       "notes": null,
-      "journal_notes": null
-    },
-    {
-      "ticker": "GHTEST",
-      "position_side": "long",
-      "option_type": "call",
-      "strike_price": 100.0,
-      "expiry_date": "2026-09-23",
-      "entry_date": "2026-09-20 23:43:10.614051+00:00",
-      "exit_date": "2026-09-21 00:01:42.559000+00:00",
-      "entry_stock_price": 105.0,
-      "premium": 1.0,
-      "contracts": 1.0,
-      "pnl": 0.0,
-      "notes": "Test closed successfully",
       "journal_notes": null
     }
   ]
