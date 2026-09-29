@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-09-29T05:19:16.067471+00:00",
+  "generated_at": "2026-09-29T05:23:45.959445+00:00",
   "window_days": 7,
   "trade_count": 1,
   "wins": 0,
@@ -20,7 +20,9 @@
       "contracts": 2.0,
       "pnl": -344.0,
       "notes": null,
-      "journal_notes": null
+      "journal_notes": null,
+      "entry_url": "https://www.tradingview.com/x/3HntnPGb/",
+      "exit_url": "https://www.tradingview.com/x/T4WIrkSQ/"
     }
   ]
 }
