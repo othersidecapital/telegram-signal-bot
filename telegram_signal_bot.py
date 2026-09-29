@@ -255,6 +255,8 @@ def build_digest_payload(rows) -> dict:
                 "pnl": _norm_num(r.get("pnl")),
                 "notes": r.get("notes"),
                 "journal_notes": r.get("journal_notes"),
+                "entry_url": r.get("entry_url"),
+                "exit_url": r.get("exit_url"),
             }
             for r in rows
         ],
@@ -275,17 +277,46 @@ def _fmt(value, suffix=""):
     return f"{value}{suffix}"
 
 
+def estimate_option_price(premium, delta, gamma, from_stock, to_stock):
+    """Estimate what the option would be worth at a given stock price, using
+    the exact same delta/gamma Taylor-expansion your journal app itself uses
+    (calcOptionLeg in app/page.js): dOption = delta*dStock + 0.5*gamma*dStock^2.
+    This is an ESTIMATE, not a stored fact -- returns None if any input is
+    missing rather than guessing, so a caller can render 'n/a' instead of a
+    fabricated number."""
+    if None in (premium, delta, gamma, from_stock, to_stock):
+        return None
+    d_stock = to_stock - from_stock
+    d_option = delta * d_stock + 0.5 * gamma * d_stock * d_stock
+    return premium + d_option
+
+
 def format_open_message(row) -> str:
     direction = f"{(row.get('position_side') or '').title()} {(row.get('option_type') or '').title()}".strip()
+
+    premium = _norm_num(row.get("premium"))
+    delta = _norm_num(row.get("delta"))
+    gamma = _norm_num(row.get("gamma"))
+    entry_stock = _norm_num(row.get("entry_stock_price"))
+    sl_stock = _norm_num(row.get("sl_stock_price"))
+    est_option_stop = estimate_option_price(premium, delta, gamma, entry_stock, sl_stock)
+    option_stop_line = (
+        f"Option stop (est.): ${est_option_stop:,.2f}\n" if est_option_stop is not None else ""
+    )
+
+    entry_link_line = f"\U0001F4C8 Entry chart: {row['entry_url']}\n" if row.get("entry_url") else ""
+
     return (
         f"✅ OPEN — live position\n"
         f"\U0001F4CA {row.get('ticker', 'n/a')} — {direction}\n\n"
         f"Strike {_fmt(row.get('strike_price'))} | Exp {_fmt(row.get('expiry_date'))}\n"
-        f"Contracts: {_fmt(row.get('contracts'))}  |  Premium: {_fmt(row.get('premium'))}\n"
+        f"Contracts: {_fmt(row.get('contracts'))}  |  Option entry price: {_fmt(row.get('premium'))}\n"
         f"Underlying @ entry: {_fmt(row.get('entry_stock_price'))}\n\n"
         f"Stop (stock): {_fmt(row.get('sl_stock_price'))}  |  Target (stock): {_fmt(row.get('tp_stock_price'))}\n"
+        f"{option_stop_line}"
         f"Δ {_fmt(row.get('delta'))}  Γ {_fmt(row.get('gamma'))}  "
         f"Θ {_fmt(row.get('theta'))}  V {_fmt(row.get('vega'))}\n\n"
+        f"{entry_link_line}"
         f"{row.get('notes') or ''}\n\n"
         f"⚠️ Educational commentary, not personalized investment advice. "
         f"Full breakdown on YouTube weekly."
@@ -324,6 +355,9 @@ def format_close_message(row) -> str:
         pnl_line = f"P&L: {sign}${pnl_val:,.2f}"
 
     notes = row.get("journal_notes") or row.get("notes") or ""
+    notes_block = f"Why it worked / didn't:\n{notes}\n\n" if notes else ""
+
+    exit_link_line = f"\U0001F4C9 Exit chart: {row['exit_url']}\n" if row.get("exit_url") else ""
 
     return (
         f"{badge}\n"
@@ -331,7 +365,8 @@ def format_close_message(row) -> str:
         f"Strike {_fmt(row.get('strike_price'))} | Exp {_fmt(row.get('expiry_date'))}\n"
         f"Entry: {_fmt(row.get('entry_date'))}  |  Exit: {_fmt(row.get('exit_date'))}\n\n"
         f"{pnl_line}\n\n"
-        f"{notes}\n\n"
+        f"{exit_link_line}"
+        f"{notes_block}"
         f"⚠️ Educational commentary, not personalized investment advice. "
         f"Full breakdown on YouTube weekly."
     )
