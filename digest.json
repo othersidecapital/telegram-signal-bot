@@ -1,28 +1,10 @@
 {
-  "generated_at": "2026-10-05T23:30:50.769682+00:00",
+  "generated_at": "2026-10-05T23:44:00.994626+00:00",
   "window_days": 7,
-  "trade_count": 1,
+  "trade_count": 0,
   "wins": 0,
-  "losses": 1,
-  "win_rate_pct": 0.0,
-  "total_pnl": -344.0,
-  "trades": [
-    {
-      "ticker": "INTC",
-      "position_side": "long",
-      "option_type": "call",
-      "strike_price": 122.0,
-      "expiry_date": "2026-10-02",
-      "entry_date": "2026-09-23 19:01:06.587261+00:00",
-      "exit_date": "2026-09-28 23:33:36.978000+00:00",
-      "entry_stock_price": 121.15,
-      "premium": 4.7,
-      "contracts": 2.0,
-      "pnl": -344.0,
-      "notes": null,
-      "journal_notes": null,
-      "entry_url": "https://www.tradingview.com/x/3HntnPGb/",
-      "exit_url": "https://www.tradingview.com/x/T4WIrkSQ/"
-    }
-  ]
+  "losses": 0,
+  "win_rate_pct": null,
+  "total_pnl": null,
+  "trades": []
 }
