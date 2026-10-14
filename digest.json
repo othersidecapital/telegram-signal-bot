@@ -1,11 +1,11 @@
 {
-  "generated_at": "2026-10-14T15:10:25.702686+00:00",
+  "generated_at": "2026-10-14T15:47:10.643555+00:00",
   "window_days": 7,
-  "trade_count": 4,
+  "trade_count": 3,
   "wins": 1,
-  "losses": 2,
-  "win_rate_pct": 25.0,
-  "total_pnl": 1418.0,
+  "losses": 1,
+  "win_rate_pct": 33.3,
+  "total_pnl": 1660.0,
   "trades": [
     {
       "ticker": "META",
@@ -57,23 +57,6 @@
       "journal_notes": null,
       "entry_url": null,
       "exit_url": "https://www.tradingview.com/x/p0rbx8gM/"
-    },
-    {
-      "ticker": "INTC",
-      "position_side": "long",
-      "option_type": "call",
-      "strike_price": 114.0,
-      "expiry_date": "2026-10-14",
-      "entry_date": "2026-10-06 18:55:37.613568+00:00",
-      "exit_date": "2026-10-07 15:25:46.564000+00:00",
-      "entry_stock_price": 114.65,
-      "premium": 4.06,
-      "contracts": 2.0,
-      "pnl": -242.0,
-      "notes": "Entered slightly early, will wait for further confirmation following.",
-      "journal_notes": null,
-      "entry_url": "https://www.tradingview.com/x/aKEC6wur/",
-      "exit_url": "https://www.tradingview.com/x/fG2GMR13/"
     }
   ]
 }
