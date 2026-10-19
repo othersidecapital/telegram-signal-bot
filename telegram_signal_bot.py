@@ -91,9 +91,18 @@ import json
 import os
 import time
 from datetime import datetime, timezone
+from datetime import timedelta
 from pathlib import Path
 
 import requests
+
+# Timezone used for timestamps shown in Telegram messages: BC time, which is
+# UTC-7 year-round since BC stopped changing clocks (permanent daylight time;
+# the last switch was Mar 8 2026, and clocks stay put on Nov 1 2026). A fixed
+# offset is used on purpose instead of a tz database lookup, so the output
+# doesn't depend on how up to date the GitHub runner's tzdata is. Timestamps
+# from before Mar 8 2026 would show one hour off; your trades are all newer.
+PACIFIC = timezone(timedelta(hours=-7))
 
 # ---------------------------------------------------------------------------
 # CONFIG
@@ -277,18 +286,51 @@ def _fmt(value, suffix=""):
     return f"{value}{suffix}"
 
 
-def estimate_option_price(premium, delta, gamma, from_stock, to_stock):
+def _fmt_dt(value):
+    """Date + time as 'YYYY-MM-DD HH:MM:SS PT' in Pacific time (PST/PDT
+    switches automatically) -- no microseconds, no UTC offset. Naive
+    timestamps are assumed to be UTC, which is how your DB stores them."""
+    if value is None:
+        return "n/a"
+    if isinstance(value, str):
+        try:
+            value = datetime.fromisoformat(value)
+        except ValueError:
+            return value[:19].replace("T", " ")
+    if isinstance(value, datetime):
+        if value.tzinfo is None:
+            value = value.replace(tzinfo=timezone.utc)
+        return value.astimezone(PACIFIC).strftime("%Y-%m-%d %H:%M:%S") + " PT"
+    return str(value)
+
+
+def _days_held(entry_dt) -> int:
+    """Whole calendar days (UTC) since entry, never negative."""
+    if not isinstance(entry_dt, datetime):
+        return 0
+    if entry_dt.tzinfo is not None:
+        entry_dt = entry_dt.astimezone(timezone.utc)
+    return max(0, (datetime.now(timezone.utc).date() - entry_dt.date()).days)
+
+
+def estimate_option_price(premium, delta, gamma, from_stock, to_stock, theta=None, days_held=0):
     """Estimate what the option would be worth at a given stock price, using
-    the exact same delta/gamma Taylor-expansion your journal app itself uses
+    the same delta/gamma Taylor-expansion your journal app uses
     (calcOptionLeg in app/page.js): dOption = delta*dStock + 0.5*gamma*dStock^2.
-    This is an ESTIMATE, not a stored fact -- returns None if any input is
-    missing rather than guessing, so a caller can render 'n/a' instead of a
-    fabricated number."""
+    If theta and days_held are given, theta*days_held is added on top and the
+    result is floored at 0 -- the same way your Trailing Stops tab computes
+    its option price, so the bot's number lines up with what you see there.
+    This is an ESTIMATE, not a stored fact -- returns None if any core input
+    is missing rather than guessing, so a caller can omit the line instead of
+    showing a fabricated number."""
     if None in (premium, delta, gamma, from_stock, to_stock):
         return None
     d_stock = to_stock - from_stock
     d_option = delta * d_stock + 0.5 * gamma * d_stock * d_stock
-    return premium + d_option
+    est = premium + d_option
+    if theta is not None and days_held:
+        est += theta * days_held
+    return max(0.0, est)
 
 
 def format_open_message(row) -> str:
@@ -327,10 +369,32 @@ def format_stop_update_message(row, field: str, old_value, new_value) -> str:
     label = STOP_COLUMNS.get(field, "Stop")
     old_str = f"${old_value:,.2f}" if old_value is not None else "not set"
     new_str = f"${new_value:,.2f}"
+
+    # Estimated option price at the stop (stock-price stop -> option price),
+    # theta-adjusted for days held like your Trailing Stops tab.
+    premium = _norm_num(row.get("premium"))
+    delta = _norm_num(row.get("delta"))
+    gamma = _norm_num(row.get("gamma"))
+    theta = _norm_num(row.get("theta"))
+    entry_stock = _norm_num(row.get("entry_stock_price"))
+    days = _days_held(row.get("entry_date"))
+    est_new = estimate_option_price(premium, delta, gamma, entry_stock, new_value, theta, days)
+    est_old = (
+        estimate_option_price(premium, delta, gamma, entry_stock, old_value, theta, days)
+        if old_value is not None else None
+    )
+    if est_new is None:
+        option_line = ""
+    elif est_old is not None:
+        option_line = f"Option stop (est.): ${est_old:,.2f} → ${est_new:,.2f}\n"
+    else:
+        option_line = f"Option stop (est.): ${est_new:,.2f}\n"
+
     return (
         f"\U0001F53A STOP UPDATED\n"
         f"\U0001F4CA {row.get('ticker', 'n/a')}\n\n"
-        f"{label}: {old_str} → {new_str}\n\n"
+        f"{label} (stock): {old_str} → {new_str}\n"
+        f"{option_line}\n"
         f"⚠️ Educational commentary, not personalized investment advice. "
         f"Full breakdown on YouTube weekly."
     )
@@ -363,7 +427,7 @@ def format_close_message(row) -> str:
         f"{badge}\n"
         f"\U0001F4CA {row.get('ticker', 'n/a')} — {direction}\n\n"
         f"Strike {_fmt(row.get('strike_price'))} | Exp {_fmt(row.get('expiry_date'))}\n"
-        f"Entry: {_fmt(row.get('entry_date'))}  |  Exit: {_fmt(row.get('exit_date'))}\n\n"
+        f"Entry: {_fmt_dt(row.get('entry_date'))}  |  Exit: {_fmt_dt(row.get('exit_date'))}\n\n"
         f"{pnl_line}\n\n"
         f"{exit_link_line}"
         f"{notes_block}"
