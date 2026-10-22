@@ -1,1 +1,1 @@
-{"last_created_at": "2026-10-16 18:25:50.263722+00:00", "tracked_open_ids": [], "stop_watch": {}}
+{"last_created_at": "2026-10-22 16:17:18.231298+00:00", "tracked_open_ids": ["de2123af-0d71-4532-9a94-dd48ec864a09", "6b084dc2-9284-40f4-9c10-2df90abbb588"], "stop_watch": {"de2123af-0d71-4532-9a94-dd48ec864a09": {"sl_stock_price": 129.26, "trailing_stop_price": null}, "6b084dc2-9284-40f4-9c10-2df90abbb588": {"sl_stock_price": 390.17, "trailing_stop_price": null}}}
