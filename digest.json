@@ -1,11 +1,11 @@
 {
-  "generated_at": "2026-10-23T15:25:10.870635+00:00",
+  "generated_at": "2026-10-23T19:25:34.323226+00:00",
   "window_days": 7,
-  "trade_count": 2,
-  "wins": 1,
+  "trade_count": 1,
+  "wins": 0,
   "losses": 1,
-  "win_rate_pct": 50.0,
-  "total_pnl": 3216.0,
+  "win_rate_pct": 0.0,
+  "total_pnl": -596.0,
   "trades": [
     {
       "ticker": "NVDA",
@@ -23,23 +23,6 @@
       "journal_notes": null,
       "entry_url": "https://www.tradingview.com/x/BSBD4Ydy/",
       "exit_url": "https://www.tradingview.com/x/gEDX3Neo/"
-    },
-    {
-      "ticker": "TSLA",
-      "position_side": "long",
-      "option_type": "put",
-      "strike_price": 382.5,
-      "expiry_date": "2026-10-23",
-      "entry_date": "2026-10-09 15:17:43.008439+00:00",
-      "exit_date": "2026-10-16 17:51:46.090000+00:00",
-      "entry_stock_price": 384.4,
-      "premium": 13.83,
-      "contracts": 1.0,
-      "pnl": 3812.0,
-      "notes": null,
-      "journal_notes": "Good trade.",
-      "entry_url": "https://www.tradingview.com/x/Y3ZWmi69/",
-      "exit_url": "https://www.tradingview.com/x/qgXQTja2/"
     }
   ]
 }
