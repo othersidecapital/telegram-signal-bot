@@ -1,11 +1,11 @@
 {
-  "generated_at": "2026-10-28T15:14:49.853075+00:00",
+  "generated_at": "2026-10-28T20:19:47.899570+00:00",
   "window_days": 7,
-  "trade_count": 3,
+  "trade_count": 2,
   "wins": 0,
-  "losses": 3,
+  "losses": 2,
   "win_rate_pct": 0.0,
-  "total_pnl": -2099.0,
+  "total_pnl": -1503.0,
   "trades": [
     {
       "ticker": "ORCL",
@@ -40,23 +40,6 @@
       "journal_notes": null,
       "entry_url": "https://www.tradingview.com/x/LONM6XyU/",
       "exit_url": "https://www.tradingview.com/x/dZ6dvdOH/"
-    },
-    {
-      "ticker": "NVDA",
-      "position_side": "long",
-      "option_type": "put",
-      "strike_price": 215.0,
-      "expiry_date": "2026-10-26",
-      "entry_date": "2026-10-16 18:25:50.263722+00:00",
-      "exit_date": "2026-10-21 18:07:55.526000+00:00",
-      "entry_stock_price": 214.66,
-      "premium": 5.2,
-      "contracts": 2.0,
-      "pnl": -596.0,
-      "notes": null,
-      "journal_notes": "Move sl into profit next time",
-      "entry_url": "https://www.tradingview.com/x/BSBD4Ydy/",
-      "exit_url": "https://www.tradingview.com/x/gEDX3Neo/"
     }
   ]
 }
