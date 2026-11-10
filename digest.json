@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-10T10:55:32.233172+00:00",
+  "generated_at": "2026-11-10T18:27:27.077050+00:00",
   "window_days": 7,
   "trade_count": 2,
   "wins": 1,
@@ -20,7 +20,7 @@
       "contracts": 2.0,
       "pnl": 4642.0,
       "notes": null,
-      "journal_notes": null,
+      "journal_notes": "Closed at TP.",
       "entry_url": "https://www.tradingview.com/x/GDLpsT2z/",
       "exit_url": "https://www.tradingview.com/x/2evD3iTT/"
     },
@@ -37,7 +37,7 @@
       "contracts": 1.0,
       "pnl": -510.0,
       "notes": "Stop was a tight, market reached and reversed to head to our TP.",
-      "journal_notes": null,
+      "journal_notes": "Closed at SL.",
       "entry_url": "https://www.tradingview.com/x/AAH8F2Ho/",
       "exit_url": "https://www.tradingview.com/x/iFKyJwnU/"
     }
