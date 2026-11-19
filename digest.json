@@ -1,28 +1,10 @@
 {
-  "generated_at": "2026-11-19T08:41:24.011782+00:00",
+  "generated_at": "2026-11-19T17:39:43.259336+00:00",
   "window_days": 7,
-  "trade_count": 1,
+  "trade_count": 0,
   "wins": 0,
-  "losses": 1,
-  "win_rate_pct": 0.0,
-  "total_pnl": -884.0,
-  "trades": [
-    {
-      "ticker": "NOW",
-      "position_side": "long",
-      "option_type": "put",
-      "strike_price": 103.0,
-      "expiry_date": "2026-11-16",
-      "entry_date": "2026-11-10 14:44:17.955972+00:00",
-      "exit_date": "2026-11-12 15:32:13.875000+00:00",
-      "entry_stock_price": 103.05,
-      "premium": 3.78,
-      "contracts": 4.0,
-      "pnl": -884.0,
-      "notes": null,
-      "journal_notes": "stopped out",
-      "entry_url": "https://www.tradingview.com/x/tsYJNsRT/",
-      "exit_url": "https://www.tradingview.com/x/S2h43Z5k/"
-    }
-  ]
+  "losses": 0,
+  "win_rate_pct": null,
+  "total_pnl": null,
+  "trades": []
 }
