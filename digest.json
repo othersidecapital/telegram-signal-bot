@@ -1,10 +1,28 @@
 {
-  "generated_at": "2026-11-20T13:23:47.075983+00:00",
+  "generated_at": "2026-11-20T21:22:55.428071+00:00",
   "window_days": 7,
-  "trade_count": 0,
+  "trade_count": 1,
   "wins": 0,
-  "losses": 0,
-  "win_rate_pct": null,
-  "total_pnl": null,
-  "trades": []
+  "losses": 1,
+  "win_rate_pct": 0.0,
+  "total_pnl": -75.0,
+  "trades": [
+    {
+      "ticker": "GOOG",
+      "position_side": "long",
+      "option_type": "put",
+      "strike_price": 285.0,
+      "expiry_date": "2026-12-11",
+      "entry_date": "2026-11-16 19:57:04.816091+00:00",
+      "exit_date": "2026-11-20 13:47:55.380000+00:00",
+      "entry_stock_price": 282.58,
+      "premium": 12.45,
+      "contracts": 1.0,
+      "pnl": -75.0,
+      "notes": null,
+      "journal_notes": null,
+      "entry_url": "https://www.tradingview.com/x/mpnosmax/",
+      "exit_url": "https://www.tradingview.com/x/Rd0pZS0q/"
+    }
+  ]
 }
