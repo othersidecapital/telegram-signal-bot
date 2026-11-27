@@ -1,11 +1,11 @@
 {
-  "generated_at": "2026-11-27T04:52:49.497446+00:00",
+  "generated_at": "2026-11-27T14:29:37.798084+00:00",
   "window_days": 7,
-  "trade_count": 2,
+  "trade_count": 1,
   "wins": 1,
-  "losses": 1,
-  "win_rate_pct": 50.0,
-  "total_pnl": 1214.92,
+  "losses": 0,
+  "win_rate_pct": 100.0,
+  "total_pnl": 1289.92,
   "trades": [
     {
       "ticker": "META",
@@ -23,23 +23,6 @@
       "journal_notes": null,
       "entry_url": "https://www.tradingview.com/x/YWZ0I7Qn/",
       "exit_url": "https://www.tradingview.com/x/axkLDCEs/"
-    },
-    {
-      "ticker": "GOOG",
-      "position_side": "long",
-      "option_type": "put",
-      "strike_price": 285.0,
-      "expiry_date": "2026-12-11",
-      "entry_date": "2026-11-16 19:57:04.816091+00:00",
-      "exit_date": "2026-11-20 13:47:55.380000+00:00",
-      "entry_stock_price": 282.58,
-      "premium": 12.45,
-      "contracts": 1.0,
-      "pnl": -75.0,
-      "notes": null,
-      "journal_notes": null,
-      "entry_url": "https://www.tradingview.com/x/mpnosmax/",
-      "exit_url": "https://www.tradingview.com/x/Rd0pZS0q/"
     }
   ]
 }
